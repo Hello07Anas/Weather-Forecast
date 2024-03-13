@@ -70,4 +70,7 @@ dependencies {
     //ViewModel
     implementation ("androidx.lifecycle:lifecycle-extensions:2.2.0")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
+
+    // tool bar
+    implementation("androidx.appcompat:appcompat:1.3.0")
 }
