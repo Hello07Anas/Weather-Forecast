@@ -66,11 +66,14 @@ dependencies {
     //Coroutine
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
-
+    // lifecycleScope
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
     //ViewModel
     implementation ("androidx.lifecycle:lifecycle-extensions:2.2.0")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
 
     // tool bar
     implementation("androidx.appcompat:appcompat:1.3.0")
+    // GridView
+    implementation("androidx.cardview:cardview:1.0.0")
 }

@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface WeatherRepo {
     // From Network
-    fun getAllMoviews(): Flow<WeatherResponse>
+    fun getWeather(): Flow<WeatherResponse>
 
     // From Database TODO <<<<<>>>>>
 
