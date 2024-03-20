@@ -19,7 +19,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/innerConstraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="#8591F6">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline_horizontal"
@@ -39,15 +40,15 @@
                 android:id="@+id/txtTimeZone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:text="TimeZone"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/txtDate"
@@ -63,36 +64,36 @@
                 android:id="@+id/cardView"
                 android:layout_width="0dp"
                 android:layout_height="250dp"
-                app:cardCornerRadius="20dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtDate"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp">
+                android:layout_marginEnd="16dp"
+                app:cardCornerRadius="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtDate">
 
                 <TextView
                     android:id="@+id/txtStateOfWeather"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="State of Weather"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="16dp"/>
+                    android:layout_marginTop="16dp"
+                    android:text="State of Weather" />
 
                 <TextView
-                    android:id="@+id/textView5"
+                    android:id="@+id/txtCurrentTemp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="18°C"
-                    android:textSize="70sp"
-                    android:textStyle="bold"
                     android:layout_gravity="center"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
+                    android:text="18°C"
+                    android:textSize="70sp"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txtStateOfWeather"/>
+                    app:layout_constraintTop_toBottomOf="@+id/txtStateOfWeather" />
 
             </androidx.cardview.widget.CardView>
 
@@ -111,15 +112,15 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/days_of_week"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/hours_of_day"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                tools:listitem="@layout/list_of_days"/>
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hours_of_day"
+                tools:listitem="@layout/list_of_days" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -132,7 +133,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/days_of_week" >
+                app:layout_constraintTop_toBottomOf="@+id/days_of_week">
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
