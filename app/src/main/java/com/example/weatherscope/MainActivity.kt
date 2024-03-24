@@ -9,6 +9,14 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import com.google.android.material.navigation.NavigationView
 import android.view.MenuItem
 import androidx.core.view.GravityCompat
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupActionBarWithNavController
+import com.example.weatherscope.databinding.ActivityMainBinding
 import com.example.weatherscope.network.WeatherRemoteDataSourceIMP
 import com.example.weatherscope.view.viewAlert.AlertsFragments
 import com.example.weatherscope.view.viewFavorites.FavoritesFragment
@@ -19,106 +27,42 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity() {
 
-    // TODO >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Testing if retrofit work or not Delete this Block
-    private val weatherDataSource = WeatherRemoteDataSourceIMP()
-    // TODO >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Testing if retrofit work or not Delete this Block
-    private lateinit var drawLayout: DrawerLayout
-    private lateinit var toolbar: Toolbar
+    lateinit var binding: ActivityMainBinding
+    private lateinit var navController: NavController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        // TODO >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Testing if retrofit work or not Delete this Block
-        val latitude = 30.013056
-        val longitude = 31.208853
-
-        GlobalScope.launch(Dispatchers.Main) {
-            try {
-                val weatherResponse = withContext(Dispatchers.IO) {
-                    weatherDataSource.getWeather(latitude, longitude)
-                }
-                Log.i("Success", "Weather data: $weatherResponse")
-                Log.i("Sucessss ya anos", "<<<<<<<Happy>>>>>>")
-            } catch (e: Exception) {
-                Log.i("TAG", "Error fetching weather data: ${e.message}")
-                throw e
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        val bottomNavigationView = binding.bottomNavigationBar
+        navController = Navigation.findNavController(this, R.id.mainFragment)
+        NavigationUI.setupWithNavController(bottomNavigationView, navController)
+        bottomNavigationView.setOnItemSelectedListener { item: MenuItem ->
+            val itemId = item.itemId
+            if (itemId == R.id.FragmentHome) {
+                navigateToFragment(R.id.FragmentHome)
+            } else if (itemId == R.id.favoritesFragment) {
+                navigateToFragment(R.id.favoritesFragment)
+            } else if (itemId == R.id.settingsFragment) {
+                navigateToFragment(R.id.settingsFragment)
+            } else if (itemId == R.id.alertsFragments) {
+                navigateToFragment(R.id.alertsFragments)
             }
-        }
-        // TODO >>>>>><>>>>>>>>>>>>>>>>>>>>>>>>>>  Testing if retrofit work or not Delete this Block
-
-        toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
-
-        drawLayout = findViewById(R.id.drawer_layout)
-        val navigationView: NavigationView = findViewById(R.id.nav_view)
-        navigationView.setNavigationItemSelectedListener(this)
-
-        val toggle = ActionBarDrawerToggle(
-            this,
-            drawLayout,
-            toolbar,
-            R.string.open_nav,
-            R.string.close_nav
-        )
-
-        drawLayout.addDrawerListener(toggle)
-        toggle.syncState()
-
-        if (savedInstanceState == null) {
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.fragment_container, HomeFragment())
-                .commit()
-
-            navigationView.setCheckedItem(R.id.nav_home)
+            true
         }
 
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.nav_home -> {
-                toolbar.title = "Home"
-                supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, HomeFragment())
-                    .commit()
-            }
-            R.id.nav_alert -> {
-                toolbar.title = "Alerts"
-                supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, AlertsFragments())
-                    .commit()
-            }
-            R.id.nav_setting -> {
-                toolbar.title = "Settings"
-                supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, SettingsFragment())
-                    .commit()
-            }
-            R.id.nav_fav -> {
-                toolbar.title = "Favorites"
-                supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, FavoritesFragment())
-                    .commit()
-            }
-            R.id.nav_logout -> {
-                finish()
-            }
+    private fun navigateToFragment(fragmentId: Int) {
+        if (navController.currentDestination?.id != fragmentId) {
+            navController.popBackStack(R.id.FragmentHome, false)
+            navController.navigate(fragmentId)
         }
-        drawLayout.closeDrawer(GravityCompat.START)
-        return true
     }
 
     override fun onBackPressed() {
-        if (drawLayout.isDrawerOpen(GravityCompat.START)) {
-            drawLayout.closeDrawer(GravityCompat.START)
-        } else {
+        if (!navController.navigateUp()) {
             super.onBackPressed()
         }
     }

@@ -1,45 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn = "navigation_view"
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
     >
-
-    <group
-        android:checkableBehavior="single">
-
-        <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/nav_home"
-            android:title="Home" />
-
-        <item
-            android:id="@+id/nav_fav"
-            android:icon="@drawable/nav_fav"
-            android:title="Favorites" />
-
-        <item
-            android:id="@+id/nav_alert"
-            android:icon="@drawable/nav_alert2"
-            android:title="Alerts" />
-
-        <item
-            android:id="@+id/nav_setting"
-            android:icon="@drawable/nav_setting"
-            android:title="Settings" />
-    </group>
-
     <item
-        android:title="">
-
-        <menu>
-            <item
-                android:id="@+id/nav_logout"
-                android:icon="@drawable/nav_close"
-                android:title="Exit">
-
-            </item>
-        </menu>
-    </item>
-
+        android:id="@+id/FragmentHome"
+        android:icon="@drawable/nav_home"
+        android:title="Home" />
+    <item
+        android:id="@+id/alertsFragments"
+        android:icon="@drawable/nav_alert"
+        android:title="Alert" />
+    <item
+        android:id="@+id/favoritesFragment"
+        android:icon="@drawable/nav_fav"
+        android:title="Fav" />
+    <item
+        android:id="@+id/settingsFragment"
+        android:icon="@drawable/nav_setting"
+        android:title="Settings" />
 </menu>

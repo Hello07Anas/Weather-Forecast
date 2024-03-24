@@ -70,7 +70,7 @@ class DaysAdapter(
             5 -> "Thursday"
             6 -> "Friday"
             7 -> "Saturday"
-            else -> "today"
+            else -> "Tomorrow"
         }
     }
 

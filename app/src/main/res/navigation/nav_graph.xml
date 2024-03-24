@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/FragmentHome">
+    <fragment
+        android:id="@+id/FragmentHome"
+        android:name="com.example.weatherscope.view.viewHome.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_FragmentHome_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
+        <argument
+            android:name="cityName"
+            app:argType="string"
+            android:defaultValue="defultVal" />
+        <argument
+            android:name="lat"
+            app:argType="float" />
+        <argument
+            android:name="long"
+            app:argType="float" />
+        <action
+            android:id="@+id/action_FragmentHome_to_alertsFragments"
+            app:destination="@id/alertsFragments" />
+    </fragment>
+    <fragment
+        android:id="@+id/alertsFragments"
+        android:name="com.example.weatherscope.view.viewAlert.AlertsFragments"
+        android:label="fragment_alerts_fragments"
+        tools:layout="@layout/fragment_alerts_fragments" >
+        <action
+            android:id="@+id/action_alertsFragments_to_FragmentHome"
+            app:destination="@id/FragmentHome" />
+        <action
+            android:id="@+id/action_alertsFragments_to_FragmentMap"
+            app:destination="@id/FragmentMap" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.example.weatherscope.view.viewFavorites.FavoritesFragment"
+        android:label="fragment_favorites"
+        tools:layout="@layout/fragment_favorites" >
+        <action
+            android:id="@+id/action_favoritesFragment_to_FragmentMap"
+            app:destination="@id/FragmentMap" />
+        <action
+            android:id="@+id/action_favoritesFragment_to_FragmentHome"
+            app:destination="@id/FragmentHome" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.weatherscope.view.viewSetting.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/FragmentMap"
+        android:name="com.example.weatherscope.view.viewMap.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" >
+        <action
+            android:id="@+id/action_FragmentMap_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
+        <action
+            android:id="@+id/action_FragmentMap_to_alertsFragments"
+            app:destination="@id/alertsFragments" />
+    </fragment>
+</navigation>

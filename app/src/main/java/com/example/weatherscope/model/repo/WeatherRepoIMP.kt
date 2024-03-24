@@ -1,5 +1,7 @@
 package com.example.weatherscope.model.repo
 
+import com.example.weatherscope.dp.WeatherLocalDataSource
+import com.example.weatherscope.model.pojos.Weather
 import com.example.weatherscope.model.pojos.WeatherResponse
 import com.example.weatherscope.network.WeatherRemoteDataSource
 import kotlinx.coroutines.flow.Flow
@@ -7,7 +9,8 @@ import kotlinx.coroutines.flow.flow
 
 class WeatherRepoIMP(
     // TODO here will make ref form remote Data and local
-    private var weatherReamoteDataSource: WeatherRemoteDataSource
+    private var weatherReamoteDataSource: WeatherRemoteDataSource,
+    private var weatherLocalDataSource: WeatherLocalDataSource
 ) : WeatherRepo {
 
 
@@ -15,11 +18,13 @@ class WeatherRepoIMP(
         private var instance: WeatherRepoIMP? = null
         fun getInstance(
             weatherReamoteDataSource: WeatherRemoteDataSource,
+            weatherLocalDataSource: WeatherLocalDataSource
             // TODO here localData
         ): WeatherRepoIMP {
             return instance?: synchronized(this) {
                 val temp = WeatherRepoIMP(
-                    weatherReamoteDataSource)//, TODO adding local Data too
+                    weatherReamoteDataSource,
+                    weatherLocalDataSource)//, TODO adding local Data too
                 instance = temp
                 temp
             }
@@ -31,7 +36,22 @@ class WeatherRepoIMP(
     val longitude = 31.208853
     // TODO >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Delete this Block
 
+
     override fun getWeather(): Flow<WeatherResponse> = flow {
         emit(weatherReamoteDataSource.getWeather(latitude, longitude))
+    }
+
+
+    // DB
+    override fun getStoredWeather(): Flow<WeatherResponse> {
+        return weatherLocalDataSource.getWeather()
+    }
+
+    override suspend fun insertWeather(weather: WeatherResponse) {
+        weatherLocalDataSource.insertWeather(weather)
+    }
+
+    override suspend fun deleteWeather(weather: WeatherResponse) {
+        weatherLocalDataSource.delteWeather(weather)
     }
 }

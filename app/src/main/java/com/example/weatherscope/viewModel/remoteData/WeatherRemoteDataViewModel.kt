@@ -18,7 +18,6 @@ class WeatherRemoteDataViewModel(private val _iRepo: WeatherRepo): ViewModel() {
 
     init {
         Log.i(TAG, "instance initalizer: Creation of ViewModel")
-
     }
 
     val weatherRes = _weatherRes.asStateFlow()

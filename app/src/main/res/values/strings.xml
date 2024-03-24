@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Weatherscope</string>
+    <!--    API key of google maps  -->
+    <string name="google_map_api_key">AIzaSyBwiL5csf8_IqvyWaxYbzT6Qv1WCnKEKGE</string>
     <!--    TODO Next Tow line -->
     <string name="open_nav">Open Weatherscope</string>
     <string name="close_nav">Close Weatherscope</string>
@@ -13,4 +15,5 @@
     <string name="ultraViolet">Ultra Violet</string>
     <string name="visability">Visibility</string>
     <string name="sunDay">Sun Day</string>
+
 </resources>

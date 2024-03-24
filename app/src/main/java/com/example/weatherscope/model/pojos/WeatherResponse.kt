@@ -1,8 +1,15 @@
 package com.example.weatherscope.model.pojos
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "weather_response")
 data class WeatherResponse(
-    val daily: List<DailyForecast>,
-    val hourly: List<HourlyForecast>,
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0L, // Auto-generated primary key
+
+    val daily: List<DailyForecast>, // TODO <Convertetr to can be stored in DB>
+    val hourly: List<HourlyForecast>, // TODO <Convertetr to can be stored in DB>
     val lat: Double,
     val lon: Double,
     val timezone: String,

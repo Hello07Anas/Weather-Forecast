@@ -27,21 +27,13 @@ class HomeFragment : Fragment() {
 
     lateinit var daysAdapter: DaysAdapter
     lateinit var hoursAdapter: HoursAdapter
-    lateinit var daysRecyclerView: RecyclerView
-    lateinit var hoursRecyclerView: RecyclerView
+    //lateinit var daysRecyclerView: RecyclerView
+    //lateinit var hoursRecyclerView: RecyclerView
     private val weatherDataSource = WeatherRemoteDataSourceIMP()
     private val handler = Handler()
-    // next imp for ites on this view TODO << change next to BindingView
-    //   lateinit var txtTimeZone: TextView
-    //    lateinit var txtData: TextView
-    //    lateinit var txtStateOfWeather: TextView
-    //    lateinit var txtCurrentTemp: TextView
-    //    lateinit var txtPressure: TextView
 
 // 1 define binding variable
     lateinit var binding: FragmentHomeBinding
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,21 +41,7 @@ class HomeFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val view = binding.root
-
-        daysRecyclerView = view.findViewById(R.id.days_of_week)
-        hoursRecyclerView = view.findViewById(R.id.hours_of_day)
-
-        daysRecyclerView.layoutManager = LinearLayoutManager(context)
-        hoursRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-
-        daysAdapter = DaysAdapter(requireContext(), emptyList())
-        hoursAdapter = HoursAdapter(requireContext(), emptyList())
-
-        daysRecyclerView.adapter = daysAdapter
-        hoursRecyclerView.adapter = hoursAdapter
-
-        return view
+        return binding.root
     }
 
     fun updateWeatherData(dailyWeatherData: List<WeatherResponse.DailyForecast>, hourlyWeatherData: List<WeatherResponse.HourlyForecast>) {
@@ -76,6 +54,18 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.daysOfWeek.layoutManager = LinearLayoutManager(context)
+        binding.hoursOfDay.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+        daysAdapter = DaysAdapter(requireContext(), emptyList())
+        hoursAdapter = HoursAdapter(requireContext(), emptyList())
+
+        binding.hoursOfDay.adapter = hoursAdapter
+        binding.daysOfWeek.adapter = daysAdapter
+        //daysRecyclerView.adapter = daysAdapter
+//        hoursRecyclerView.adapter = hoursAdapter
+
 
         updateTime()
 
