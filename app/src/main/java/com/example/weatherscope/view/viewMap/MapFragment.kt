@@ -15,6 +15,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import java.io.IOException
 import java.util.Locale
 private const val TAG = "MapFragment"
@@ -41,7 +42,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListener
 
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
-        googleMap?.setOnMapClickListener(this)
+        googleMap.setOnMapClickListener(this)
     }
 
     override fun onMapClick(point: LatLng) {
@@ -52,7 +53,9 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListener
                 val cityName = addresses.get(0).locality
                 cityName?.let {
                     googleMap.clear()
-                    showCityDialog(cityName)
+                    googleMap.cameraPosition
+                    googleMap.addMarker(MarkerOptions().position(point))
+                    showCityDialog(cityName, point)
                 }
             } else {
                 Toast.makeText(requireContext(), "City not found", Toast.LENGTH_SHORT).show()
@@ -63,29 +66,22 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListener
         }
     }
 
-    private fun showCityDialog(cityName: String) {
+    private fun showCityDialog(cityName: String, point: LatLng) {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle(cityName)
-            .setMessage("What would you like to do?")
-            .setPositiveButton("Favorites") { dialog, which ->
-                // Handle Favorites button click
-                addToFavorites(cityName)
+            .setMessage("Want add  \"$cityName\" To your fav?")
+            .setPositiveButton("Confirm") { dialog, which ->
+                addToFavorites(cityName, point)
             }
-            .setNegativeButton("Alert") { dialog, which ->
-                // Handle Alert button click
-                setAlertForCity(cityName)
+            .setNegativeButton("Cancel") { dialog, which ->
+                dialog.dismiss()
             }
             .setCancelable(true)
             .show()
     }
 
-    private fun addToFavorites(cityName: String) {
-        // Implement your logic to add the city to favorites
+    private fun addToFavorites(cityName: String, point: LatLng) {
+        // TODO save it in dao and reload  notify favFragment recicler View on fav to update it self
         Toast.makeText(requireContext(), "Added $cityName to favorites", Toast.LENGTH_SHORT).show()
-    }
-
-    private fun setAlertForCity(cityName: String) {
-        // Implement your logic to set alert for the city
-        Toast.makeText(requireContext(), "Set alert for $cityName", Toast.LENGTH_SHORT).show()
     }
 }

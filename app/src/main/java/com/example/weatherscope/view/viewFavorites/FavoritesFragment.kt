@@ -19,8 +19,7 @@ class FavoritesFragment : Fragment() {
 
     private lateinit var binding: FragmentFavoritesBinding
 
-    // TODO the data will come from DP after save location on DP will fetch name of it and when click
-    // On item from reciclyer will bring its data from DP " I think So "
+    // TODO here will save lon and lat and name of the place
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

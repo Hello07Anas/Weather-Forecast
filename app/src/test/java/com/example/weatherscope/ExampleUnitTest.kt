@@ -14,4 +14,6 @@ class ExampleUnitTest {
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
     }
+    //  ليه الداتا بيز التستنج بتاعها تبع الاندرويد تست
+    // ايه الفرق بين الrunBlocking والrunBlockingTest
 }

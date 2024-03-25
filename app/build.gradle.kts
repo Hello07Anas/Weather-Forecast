@@ -82,5 +82,9 @@ dependencies {
     // navigation
     implementation ("androidx.navigation:navigation-fragment-ktx:2.7.7")
     implementation ("androidx.navigation:navigation-ui-ktx:2.7.7")
+    // GMS
+    implementation("com.google.android.gms:play-services-location:21.1.0")
+    // WORK MANAGER
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
 
 }

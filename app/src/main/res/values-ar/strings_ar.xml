@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Weatherscope</string>
+    <!--    API key of google maps  -->
+    <string name="google_map_api_key">AIzaSyBwiL5csf8_IqvyWaxYbzT6Qv1WCnKEKGE</string>
+    <!--    TODO Next Tow line -->
+    <string name="open_nav">افتح Weatherscope</string>
+    <string name="close_nav">أغلق Weatherscope</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">مرحبًا بالنص الفارغ</string>
+    <string name="tempTxt">١٩ درجة مئوية</string>
+    <string name="pressure">الضغط</string>
+    <string name="humidity">الرطوبة</string>
+    <string name="wind">الرياح</string>
+    <string name="cloud">السحب</string>
+    <string name="ultraViolet">الأشعة فوق البنفسجية</string>
+    <string name="visability">الرؤية</string>
+    <string name="sunDay">نهار الشمس</string>
+    <string name="GPS">GPS</string>
+    <string name="Map">الخريطة</string>
+    <string name="Location">الموقع</string>
+    <string name="Arabic">العربية</string>
+    <string name="English">English</string>
+    <string name="Language">اللغة</string>
+    <string name="Notifications">الإشعارات</string>
+    <string name="WindSpeed">سرعة الرياح</string>
+    <string name="Notificationes">الإشعارات</string>
+    <string name="Temperature">درجة الحرارة</string>
+    <string name="meterVsSec">متر / ثانية</string>
+    <string name="mileVsHour">ميل / ساعة</string>
+    <string name="EvsD">تفعيل</string>
+    <string name="Disable">تعطيل</string>
+    <string name="Celsius">درجة مئوية</string>
+    <string name="Kelvin">كلفن</string>
+    <string name="Fahrenheit">فهرنهايت</string>
+</resources>

@@ -15,5 +15,22 @@
     <string name="ultraViolet">Ultra Violet</string>
     <string name="visability">Visibility</string>
     <string name="sunDay">Sun Day</string>
+    <string name="GPS">GPS</string>
+    <string name="Map">Map</string>
+    <string name="Location">Location</string>
+    <string name="Arabic">العربية</string>
+    <string name="English">English</string>
+    <string name="Language">Language</string>
+    <string name="Notifications">Notifications</string>
+    <string name="WindSpeed">Wind Speed</string>
+    <string name="Notificationes">Notifications</string>
+    <string name="Temperature">Temperature</string>
+    <string name="meterVsSec">meter / Sec</string>
+    <string name="mileVsHour">mile / Hour</string>
+    <string name="EvsD">Enable</string>
+    <string name="Disable">Disable</string>
+    <string name="Celsius">Celsius</string>
+    <string name="Kelvin">Kelvin</string>
+    <string name="Fahrenheit">Fahrenheit</string>
 
 </resources>
