@@ -11,6 +11,11 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
+
 
     <application
         android:allowBackup="true"
@@ -28,6 +33,11 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_map_api_key"/>
 
+        <meta-data
+            android:name="android.app.notification.default_sound"
+            android:value="true" />
+        <!-- Declare the BroadcastReceiver -->
+        <receiver android:name=".view.viewAlert.AlarmReceiver" />
 
         <activity
             android:name=".MainActivity"

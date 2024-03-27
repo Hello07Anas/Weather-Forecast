@@ -6,11 +6,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface WeatherRepo {
     // From Network
-    fun getWeather(): Flow<WeatherResponse>
+    fun getWeather(lat: Double, long: Double, lang: String): Flow<WeatherResponse>
 
     // From Database TODO <<<<<>>>>>
 
-    fun getStoredWeather(): Flow<WeatherResponse>
-    suspend fun insertWeather(weather: WeatherResponse)
-    suspend fun deleteWeather(weather: WeatherResponse)
+//    fun getStoredWeather(): Flow<WeatherResponse>
+//    suspend fun insertWeather(weather: WeatherResponse)
+//    suspend fun deleteWeather(weather: WeatherResponse)
 }

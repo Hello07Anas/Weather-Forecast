@@ -11,11 +11,16 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.weatherscope.R
 import com.example.weatherscope.databinding.FragmentMapBinding
+import com.example.weatherscope.view.viewFavorites.FavoritesLocation
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import org.json.JSONArray
+import org.json.JSONObject
+import java.io.File
+import java.io.FileWriter
 import java.io.IOException
 import java.util.Locale
 private const val TAG = "MapFragment"
@@ -81,7 +86,32 @@ class MapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListener
     }
 
     private fun addToFavorites(cityName: String, point: LatLng) {
-        // TODO save it in dao and reload  notify favFragment recicler View on fav to update it self
+        // Create a FavoriteLocation object to represent the favorite location
+        val favoritesLocation = FavoritesLocation(cityName, point.latitude, point.longitude)
+
+        // Get the file directory where you want to save the favorites file
+        val favoritesFile = File(requireContext().filesDir, "favorites.json")
+        // Read existing favorites or create a new JSONArray if the file doesn't exist
+        val favoritesArray = if (favoritesFile.exists()) {
+            JSONArray(favoritesFile.readText())
+        } else {
+            JSONArray()
+        }
+        // Convert the FavoriteLocation object to a JSONObject
+        val favoriteLocationJSON = JSONObject().apply {
+            put("cityName", favoritesLocation.cityName)
+            put("latitude", favoritesLocation.latitude)
+            put("longitude", favoritesLocation.longitude)
+        }
+        // Add the favorite location JSON object to the favorites array
+        favoritesArray.put(favoriteLocationJSON)
+        // Write the updated favorites array back to the file
+        FileWriter(favoritesFile).use { writer ->
+            writer.write(favoritesArray.toString())
+            Log.d(TAG, "Favorites array: $favoritesArray")
+        }
+        // Show a toast message indicating the location has been added to favorites
         Toast.makeText(requireContext(), "Added $cityName to favorites", Toast.LENGTH_SHORT).show()
     }
+
 }

@@ -10,6 +10,7 @@ import android.widget.Toast
 import com.example.weatherscope.databinding.FragmentSettingsBinding
 import com.example.weatherscope.util.MySharedPreferences
 import java.util.Locale
+import kotlin.coroutines.coroutineContext
 
 class SettingsFragment : Fragment() {
 
@@ -31,12 +32,15 @@ class SettingsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSettingsBinding.inflate(layoutInflater, container, false)
-        myPrefs = MySharedPreferences(requireContext()) // to intial myPrefs
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        myPrefs = MySharedPreferences(requireContext()) // to intial myPrefs
+
+//        val test = if(myPrefs.isLangEn){"en"} else {"ar"}
+//        Toast.makeText(requireContext(), "$test", Toast.LENGTH_SHORT).show()
 
         // next 5 methods just to set defult settings TODO rename them in good name
         updateLanguageCheckbox()
@@ -44,6 +48,10 @@ class SettingsFragment : Fragment() {
         updateWindSpeed()
         updateLocation()
         updateTemperature()
+
+
+        //setLocale("en") << it block the ui have to find soulution for it
+
 
         println("===============Test===============")
         println(myPrefs.isLangEn)
@@ -74,6 +82,7 @@ class SettingsFragment : Fragment() {
                 }
             } else {
                 binding.checkBoxEnglish.isChecked = true
+                myPrefs.isLangEn = true
             }
         }
         // ==================================== Language ===========================================
@@ -88,6 +97,7 @@ class SettingsFragment : Fragment() {
                 }
             } else {
                 binding.checkBoxArabic.isChecked = true
+                myPrefs.isLangEn = false
             }
         }
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -239,13 +249,16 @@ class SettingsFragment : Fragment() {
     }
 
     private fun updateNotifications() {
-        binding.checkBoxDisable.isChecked = true
+        binding.checkBoxDisable.isChecked = false
     }
     // Healper Methods for lang  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     private fun updateLanguageCheckbox() {
-        binding.checkBoxArabic.isChecked = currentLocale.language == "ar"
-        binding.checkBoxEnglish.isChecked = currentLocale.language != "ar"
+//        binding.checkBoxEnglish.isChecked = currentLocale.language != "ar"
+//        binding.checkBoxArabic.isChecked = currentLocale.language == "ar"
+        binding.checkBoxEnglish.isChecked = myPrefs.isLangEn
+        binding.checkBoxArabic.isChecked = !myPrefs.isLangEn
     }
+
 
     private fun setLocale(languageCode: String) {
         val locale = Locale(languageCode)

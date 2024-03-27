@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.weatherscope.R
 import com.example.weatherscope.model.pojos.WeatherResponse
+import com.example.weatherscope.util.MySharedPreferences
 
 
 private const val TAG = "DaysAdapter"
@@ -17,6 +18,8 @@ class DaysAdapter(
     private val context: Context,
     var weatherRes: List<WeatherResponse.DailyForecast>
 ): RecyclerView.Adapter<DaysAdapter.ViewHolder>() {
+
+    lateinit var mySharedPreferences: MySharedPreferences
 
     // Implement onCreateViewHolder method
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -26,6 +29,7 @@ class DaysAdapter(
         Log.d(TAG, "Inflated view: $v")
         val viewHolder: ViewHolder = ViewHolder(v)
         Log.i(TAG, "=========== onCreateViewHolder ===========")
+        mySharedPreferences = MySharedPreferences(context)
         return viewHolder
     }
 
@@ -62,15 +66,28 @@ class DaysAdapter(
     }
 
     fun getDayName(days: Int): String {
-        return when (days) {
-            1 -> "Sunday"
-            2 -> "Monday"
-            3 -> "Tuesday"
-            4 -> "Wednesday"
-            5 -> "Thursday"
-            6 -> "Friday"
-            7 -> "Saturday"
-            else -> "Tomorrow"
+        if(mySharedPreferences.isLangEn) {
+            return when (days) {
+                1 -> "Sunday"
+                2 -> "Monday"
+                3 -> "Tuesday"
+                4 -> "Wednesday"
+                5 -> "Thursday"
+                6 -> "Friday"
+                7 -> "Saturday"
+                else -> "Tomorrow"
+            }
+        } else {
+            return when (days) {
+                1 -> "الأحد"
+                2 -> "الأثنين"
+                3 -> "الثلاثاء"
+                4 -> "الاربعـاء"
+                5 -> "الخميس"
+                6 -> "الجمعة"
+                7 -> "السبت"
+                else -> "غدا"
+            }
         }
     }
 
