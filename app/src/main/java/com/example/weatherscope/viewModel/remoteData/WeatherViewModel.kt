@@ -12,19 +12,19 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
 private const val TAG = "AllWeatherFet"
-class WeatherRemoteDataViewModel(private val _iRepo: WeatherRepo): ViewModel() {
+class WeatherViewModel(private val _iRepo: WeatherRepo): ViewModel() {
     // TODO Create API STATE
     private val _weatherRes: MutableStateFlow<ApiState> = MutableStateFlow(ApiState.Loading)
+    val weatherRes = _weatherRes.asStateFlow()
 
     init {
         Log.i(TAG, "instance initalizer: Creation of ViewModel")
     }
 
-    val weatherRes = _weatherRes.asStateFlow()
 
-    fun getWeather() {
+    fun getWeather(lat: Double, long: Double, lang: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            _iRepo.getWeather()
+            _iRepo.getWeather(lat, long, lang)
                 .catch {
                     _weatherRes.value = ApiState.Error(it)
                 }.collect{

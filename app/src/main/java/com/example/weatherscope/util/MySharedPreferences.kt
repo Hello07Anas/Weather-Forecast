@@ -26,6 +26,12 @@ class MySharedPreferences(context: Context) {
         get() = sharedPreferences.getString("temperatureType", "C") ?: "C"
         set(value) = editor.putString("temperatureType", value).apply()
 
+    var nameOfLocation: String
+        get() = sharedPreferences.getString("nameOfLocation", "have a nice day") ?: "have a nice day"
+        set(value) = editor.putString("nameOfLocation", value).apply()
+    var desOfLocation: String
+        get() = sharedPreferences.getString("desOfLocation", "clear Skay") ?: "clear Skay"
+        set(value) = editor.putString("desOfLocation", value).apply()
 
     // TODO if have time apply and use next fun to reset settings
 //    fun resetSettings() {

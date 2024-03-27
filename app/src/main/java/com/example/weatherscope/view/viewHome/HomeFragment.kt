@@ -17,12 +17,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.getSystemService
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherscope.databinding.FragmentHomeBinding
 import com.example.weatherscope.model.pojos.WeatherResponse
+import com.example.weatherscope.model.repo.WeatherRepoIMP
+import com.example.weatherscope.network.WeatherRemoteDataSource
 import com.example.weatherscope.network.WeatherRemoteDataSourceIMP
+import com.example.weatherscope.util.ApiState
+import com.example.weatherscope.util.MySharedPreferences
+import com.example.weatherscope.viewModel.remoteData.WeatherFactory
+import com.example.weatherscope.viewModel.remoteData.WeatherViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -31,6 +39,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
@@ -44,12 +53,15 @@ class HomeFragment : Fragment() { // TODO >> take lat and lang in shared prefren
     lateinit var daysAdapter: DaysAdapter
     lateinit var hoursAdapter: HoursAdapter
     private val weatherDataSource = WeatherRemoteDataSourceIMP()
-    private val handler = Handler() // deprecated عشان المبرمجين مش بيستخدموه صح زيي كدا اه :D  << TODO أمسح الكومنت
+    lateinit var mySharedPreferences: MySharedPreferences
+    lateinit var weatherViewModel: WeatherViewModel
+    private val handler = Handler() // deprecated عشان المبرمجين مش بيستخدموه صح زيي كدا غالبا :D  << TODO أمسح الكومنت
     lateinit var binding: FragmentHomeBinding
     // allow me to get last known location
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     var latitude = 24.468381
-    var longitude = 39.611137
+    var longitude = 46.675297
+    var lang = "en"
     private var isLocationReady = false
 
 
@@ -58,7 +70,38 @@ class HomeFragment : Fragment() { // TODO >> take lat and lang in shared prefren
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+        mySharedPreferences = MySharedPreferences(requireContext())
+        setupViewModel()
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                weatherViewModel.weatherRes.collectLatest { status ->
+                    when (status) {
+                        is ApiState.Loading -> {
+                            Log.d(TAG, "observeWeather: Loading")
+                        }
+
+                        is ApiState.Success -> {
+                            Log.d(TAG, "onCreateView: Success")
+                            bind(status.data)
+                        }
+
+                        is ApiState.Error -> {
+                            Log.e(TAG, "onCreateView: Error ${status.message}")
+                        }
+                    }
+                }
+            }
+        }
+
+        if(mySharedPreferences.isLangEn) {lang = "en"} else {lang = "ar"}
+
         return binding.root
+    }
+
+    private fun setupViewModel() {
+        val repository = WeatherRepoIMP.getInstance(WeatherRemoteDataSourceIMP())
+        val viewModelFactory = WeatherFactory(repository)
+        weatherViewModel = ViewModelProvider(this, viewModelFactory)[WeatherViewModel::class.java]
     }
 
     override fun onStart() {
@@ -83,11 +126,10 @@ class HomeFragment : Fragment() { // TODO >> take lat and lang in shared prefren
     }
 
     private fun isLocationEnabled(): Boolean { // this function checks if gps or network is enabled or not
-//        val locationManager: LocationManager =
-//            requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
-//
-//        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
-//                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+        val locationManager: LocationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
         Log.i(TAG, "Checking if location is enabled")
 
         return true
@@ -111,10 +153,10 @@ class HomeFragment : Fragment() { // TODO >> take lat and lang in shared prefren
                         longitude = location.longitude
                         Log.i(TAG, "Latitude: $latitude, Longitude: $longitude")
                         getAddress(latitude, longitude)
-                        // Location is ready, set the flag to true
+                        // location is ready
                         isLocationReady = true
                         // Make the API call only when location is ready
-                        makeApiCall()
+                        weatherViewModel.getWeather(latitude, longitude, lang)
                     } else {
                         Log.e(TAG, "Location result is null")
                     }
@@ -168,45 +210,23 @@ class HomeFragment : Fragment() { // TODO >> take lat and lang in shared prefren
         updateTime()
 
 
-
-
-
-
     }
-    // TODO >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Testing if retrofit work or not Delete this Block
 
-    private fun makeApiCall() {
-        // Check if location is ready before making the API call
-        if (isLocationReady) {
-            GlobalScope.launch(Dispatchers.Main) {
-                try {
-                    val weatherResponse = withContext(Dispatchers.IO) {
-                        weatherDataSource.getWeather(latitude, longitude)
-                    }
-                    Log.i(TAG, "Weather data: $weatherResponse")
-                    Log.i(TAG, "<<<<<<<Happy>>>>>>")
-                    updateWeatherData(weatherResponse.daily, weatherResponse.hourly)
-                    val ansOfTemp = convertFromKtoC(weatherResponse.daily[0].temp.day)
-                    binding.txtTimeZone.text = weatherResponse.timezone
-                    binding.txtStateOfWeather.text = weatherResponse.hourly[0].weather[0].description
-                    binding.txtCurrentTemp.text = ansOfTemp
-                    binding.txtPressure.text = weatherResponse.hourly[0].pressure.toString()
-                    binding.txtHumidity.text = weatherResponse.hourly[0].humidity.toString()
-                    binding.txtWind.text = weatherResponse.hourly[0].wind_speed.toString()
-                    binding.txtCloud.text = weatherResponse.hourly[0].clouds.toString()
-                    binding.txtUltraViolet.text = weatherResponse.hourly[0].uvi.toString()
-                    binding.txtVisibility.text = weatherResponse.hourly[0].visibility.toString()
-                } catch (e: Exception) {
-                    Log.i(TAG, "Error fetching weather data: ${e.message}")
-                    throw e
-                }
-            }
-        } else {
-            // Location is not ready yet, wait for it
-            Log.i(TAG, "Location is not ready yet, waiting...")
-        }
+    fun bind(weatherResponse: WeatherResponse) {
+        Log.i(TAG, "Weather data: $weatherResponse")
+        Log.i(TAG, "<<<<<<<Happy>>>>>>")
+        updateWeatherData(weatherResponse.daily, weatherResponse.hourly)
+        val ansOfTemp = convertFromKtoC(weatherResponse.daily[0].temp.day)
+        binding.txtTimeZone.text = weatherResponse.timezone
+        binding.txtStateOfWeather.text = weatherResponse.hourly[0].weather[0].description
+        binding.txtCurrentTemp.text = ansOfTemp
+        binding.txtPressure.text = weatherResponse.hourly[0].pressure.toString()
+        binding.txtHumidity.text = weatherResponse.hourly[0].humidity.toString()
+        binding.txtWind.text = weatherResponse.hourly[0].wind_speed.toString()
+        binding.txtCloud.text = weatherResponse.hourly[0].clouds.toString()
+        binding.txtUltraViolet.text = weatherResponse.hourly[0].uvi.toString()
+        binding.txtVisibility.text = weatherResponse.hourly[0].visibility.toString()
     }
-    // TODO >>>>>><>>>>>>>>>>>>>>>>>>>>>>>>>>  Testing if retrofit work or not Delete this Block
 
     private fun updateTime() {
         handler.postDelayed({
