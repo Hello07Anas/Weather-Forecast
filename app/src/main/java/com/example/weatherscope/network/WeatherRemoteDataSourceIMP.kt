@@ -12,12 +12,12 @@ class WeatherRemoteDataSourceIMP: WeatherRemoteDataSource {
         RetrofitHelper.getInstance().create(WeatherService::class.java)
     }
 
-    override suspend fun getWeather(lat: Double, lon: Double, lang: String): WeatherResponse  {
+    override suspend fun getWeather(lat: Double, lon: Double, lang: String, units: String): WeatherResponse  {
 //        val part = arrayOf("current", "minutely", "hourly", "daily", "alerts")
 //        val apiKey = "51480a89243b1c0fde77f3cf9c774157"
 
         try {
-            return weatherService.getWeather(lat, lon, Constants.PART_CURRENT, Constants.API_KEY, lang)
+            return weatherService.getWeather(lat, lon, Constants.PART_CURRENT, Constants.API_KEY, lang, units)
         } catch (e: Exception) {
             Log.i(TAG, "Error fetching weather data: ${e.message}")
             throw e

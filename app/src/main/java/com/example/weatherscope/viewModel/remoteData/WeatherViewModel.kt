@@ -22,9 +22,9 @@ class WeatherViewModel(private val _iRepo: WeatherRepo): ViewModel() {
     }
 
 
-    fun getWeather(lat: Double, long: Double, lang: String) {
+    fun getWeather(lat: Double, long: Double, lang: String, units: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            _iRepo.getWeather(lat, long, lang)
+            _iRepo.getWeather(lat, long, lang, units)
                 .catch {
                     _weatherRes.value = ApiState.Error(it)
                 }.collect{

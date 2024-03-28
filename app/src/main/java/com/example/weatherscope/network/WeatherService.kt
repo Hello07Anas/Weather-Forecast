@@ -13,9 +13,16 @@ interface WeatherService {
         @Query("lon") longitude: Double,
         @Query("exclude") exclude: String,
         @Query("appid") apiKey: String,
-        @Query("lang") lang: String
+        @Query("lang") lang: String,
+        @Query("units") units: String
         // TODO add lang and (unit >> انواع درجات الحرارة)
     ): WeatherResponse
 }
+
+/*
+        Celsius is for metric units.
+        Kelvin is an absolute temperature scale.
+        Fahrenheit is for imperial units.
+ */
 
 

@@ -52,7 +52,7 @@ class HomeFragment : Fragment() { // TODO >> take lat and lang in shared prefren
 
     lateinit var daysAdapter: DaysAdapter
     lateinit var hoursAdapter: HoursAdapter
-    private val weatherDataSource = WeatherRemoteDataSourceIMP()
+    //private val weatherDataSource = WeatherRemoteDataSourceIMP()
     lateinit var mySharedPreferences: MySharedPreferences
     lateinit var weatherViewModel: WeatherViewModel
     private val handler = Handler() // deprecated عشان المبرمجين مش بيستخدموه صح زيي كدا غالبا :D  << TODO أمسح الكومنت
@@ -61,6 +61,7 @@ class HomeFragment : Fragment() { // TODO >> take lat and lang in shared prefren
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     var latitude = 24.468381
     var longitude = 46.675297
+    var units = "standard"
     var lang = "en"
     private var isLocationReady = false
 
@@ -127,12 +128,12 @@ class HomeFragment : Fragment() { // TODO >> take lat and lang in shared prefren
 
     private fun isLocationEnabled(): Boolean { // this function checks if gps or network is enabled or not
         val locationManager: LocationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        Log.i(TAG, "Checking if location is enabled")
 
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
                 locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-        Log.i(TAG, "Checking if location is enabled")
 
-        return true
+        //return true
     }
 
     @SuppressLint("MissingPermission")
@@ -151,12 +152,13 @@ class HomeFragment : Fragment() { // TODO >> take lat and lang in shared prefren
                     if (location != null) {
                         latitude = location.latitude
                         longitude = location.longitude
+                        units = mySharedPreferences.temperatureType
                         Log.i(TAG, "Latitude: $latitude, Longitude: $longitude")
                         getAddress(latitude, longitude)
                         // location is ready
                         isLocationReady = true
                         // Make the API call only when location is ready
-                        weatherViewModel.getWeather(latitude, longitude, lang)
+                        weatherViewModel.getWeather(latitude, longitude, lang, units)
                     } else {
                         Log.e(TAG, "Location result is null")
                     }
@@ -216,10 +218,22 @@ class HomeFragment : Fragment() { // TODO >> take lat and lang in shared prefren
         Log.i(TAG, "Weather data: $weatherResponse")
         Log.i(TAG, "<<<<<<<Happy>>>>>>")
         updateWeatherData(weatherResponse.daily, weatherResponse.hourly)
-        val ansOfTemp = convertFromKtoC(weatherResponse.daily[0].temp.day)
+//        val ansOfTemp = convertFromKtoC(weatherResponse.daily[0].temp.day)
+        val ansOfTemp = weatherResponse.daily[0].temp.day
+        when (mySharedPreferences.temperatureType) {
+            "metric" -> {//txtTmpT
+                binding.txtTmpT.text = "°C"
+            }
+            "absolute" -> {
+                binding.txtTmpT.text = "K"
+            }
+            else -> {
+                binding.txtTmpT.text = "°F"
+            }
+        }
         binding.txtTimeZone.text = weatherResponse.timezone
         binding.txtStateOfWeather.text = weatherResponse.hourly[0].weather[0].description
-        binding.txtCurrentTemp.text = ansOfTemp
+        binding.txtCurrentTemp.text = ansOfTemp.toString()
         binding.txtPressure.text = weatherResponse.hourly[0].pressure.toString()
         binding.txtHumidity.text = weatherResponse.hourly[0].humidity.toString()
         binding.txtWind.text = weatherResponse.hourly[0].wind_speed.toString()

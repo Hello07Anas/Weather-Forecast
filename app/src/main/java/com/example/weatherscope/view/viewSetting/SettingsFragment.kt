@@ -23,7 +23,7 @@ class SettingsFragment : Fragment() {
     private var isEnablednotification: Boolean = false
     private var isMeterPerSecTheWindSpeed: Boolean = false
     private var isLocationUsingMap:Boolean = false
-    private var temperatureType: String = "C" //  C -> celsius     K  ->  Kelvin     F -> Fahrenheit
+    private var temperatureType: String = "metric" //  C -> celsius     K  ->  Kelvin     F -> Fahrenheit
     private var isLangEn: Boolean = true
 
 
@@ -172,8 +172,8 @@ class SettingsFragment : Fragment() {
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         binding.checkBoxCelsuis.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                temperatureType = "C"
-                myPrefs.temperatureType = "C"
+                temperatureType = "metric"
+                myPrefs.temperatureType = "metric"
 //                setDefultTemp()
                 binding.checkBoxFahrenheight.isChecked = false
                 binding.checkBoxKelvin.isChecked = false
@@ -183,8 +183,8 @@ class SettingsFragment : Fragment() {
 
         binding.checkBoxFahrenheight.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                temperatureType = "F"
-                myPrefs.temperatureType = "F"
+                temperatureType = "imperial"
+                myPrefs.temperatureType = "imperial"
 //                setDefultTemp()
                 binding.checkBoxCelsuis.isChecked = false
                 binding.checkBoxKelvin.isChecked = false
@@ -194,8 +194,8 @@ class SettingsFragment : Fragment() {
 
         binding.checkBoxKelvin.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                temperatureType = "K"
-                myPrefs.temperatureType = "K"
+                temperatureType = "absolute"
+                myPrefs.temperatureType = "absolute"
 //                setDefultTemp()
                 binding.checkBoxCelsuis.isChecked = false
                 binding.checkBoxFahrenheight.isChecked = false
@@ -224,8 +224,8 @@ class SettingsFragment : Fragment() {
     private fun updateLocation() {
         if (binding.checkBoxFahrenheight.isChecked == false && binding.checkBoxKelvin.isChecked == false) {
             binding.checkBoxGBS.isChecked = true
-            temperatureType = "C"
-            myPrefs.temperatureType = "C"
+            temperatureType = "metric"
+            myPrefs.temperatureType = "metric"
         }
     }
 

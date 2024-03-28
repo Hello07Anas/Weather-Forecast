@@ -33,8 +33,8 @@ class WeatherRepoIMP(
         }
     }
 
-    override fun getWeather(lat: Double, long: Double, lang: String): Flow<WeatherResponse> = flow {
-        emit(weatherReamoteDataSource.getWeather(lat, long, lang))
+    override fun getWeather(lat: Double, long: Double, lang: String, units: String): Flow<WeatherResponse> = flow {
+        emit(weatherReamoteDataSource.getWeather(lat, long, lang, units))
 
     }
 

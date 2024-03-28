@@ -34,10 +34,12 @@ class HoursAdapter(
     override fun onBindViewHolder(holder: HoursAdapter.ViewHolder, position: Int) {
         // Bind data to your ViewHolder
         val cuurentHour = weatherRes[position]
-        val ansOfTemp = convertFromKtoC(cuurentHour.temp)
+//        val ansOfTemp = convertFromKtoC(cuurentHour.temp)
+        val ansOfTemp = cuurentHour.temp
+
         val ansOfHour = getHourNum(position)
 
-        holder.txtTempe.text = ansOfTemp
+        holder.txtTempe.text = ansOfTemp.toString()
         holder.txtTime.text = ansOfHour
         Log.i(TAG, "=========== onBindViewHolder ===========")
     }
