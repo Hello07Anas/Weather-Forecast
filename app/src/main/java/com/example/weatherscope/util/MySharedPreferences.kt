@@ -23,7 +23,7 @@ class MySharedPreferences(context: Context) {
         set(value) = editor.putBoolean("isLocationUsingMap", value).apply()
 
     var temperatureType: String
-        get() = sharedPreferences.getString("temperatureType", "C") ?: "C"
+        get() = sharedPreferences.getString("temperatureType", "metric") ?: "metric"
         set(value) = editor.putString("temperatureType", value).apply()
 
     var nameOfLocation: String

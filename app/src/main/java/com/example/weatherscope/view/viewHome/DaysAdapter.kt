@@ -38,11 +38,12 @@ class DaysAdapter(
         // Bind data to your ViewHolder
         val cuurentDay = weatherRes[position]
         val ansOfDayName = getDayName(position)
-        val ansOfTemp = convertFromKtoC(cuurentDay.temp.day)
+        //val ansOfTemp = convertFromKtoC(cuurentDay.temp.day)
+        val ansOfTemp = cuurentDay.temp.day
         val descriptions = cuurentDay.weather.map { it.description }.joinToString()
 
         holder.txtDay.text = ansOfDayName
-        holder.txtTemp.text = ansOfTemp
+        holder.txtTemp.text = ansOfTemp.toString()
         holder.txtStateWeather.text = descriptions
         // TODO image of "stateImg"
         // Handel it with if statement depend on weatherState put image from drawable.
